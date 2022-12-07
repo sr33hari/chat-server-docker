@@ -18,9 +18,12 @@ class ChatClient:
             self.logger.info(data.decode())
     
     def send_message(self):
+        name = input("Enter your username: ")
+        print(f"Hey {name}! Welcome to the chat window! Happy Chatting!\n")
         while True:
             user_message = input()
-            self.sock.send(user_message.encode('utf-8','backslashreplace'))
+            self.sock.sendall(str.encode("\n".join([name, user_message])))
+            # self.sock.send(user_message.encode('utf-8','backslashreplace'))
 
     @staticmethod
     def _setup_socket(host, port) :

@@ -25,12 +25,15 @@ class ChatServer:
 	def relay_messages(self, conn, addr):
 		while True:
 			data = conn.recv(4096)
+			name, message = data.decode('utf-8').split('\n')
+			self.logger.debug(f"Name {name}, | Message {message}")
 			for connection in self.connections:
 				a = str(addr[0] + " | ").encode('utf-8')
 				now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 				now+=" | "
 				now = now.encode('utf-8')
-				connection.send(a+ now +data)
+				self.logger.debug(f"Message from {name} : {message}")
+				connection.send(a+ now + name + message)
 			if not data:
 				self.logger.warning("No data. Exiting")
 				break
